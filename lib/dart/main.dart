@@ -9,7 +9,7 @@ import 'lib/directshow/directshow_device_list.dart';
 
 final logger = Logger('main');
 
-void main() async {
+Future<void> _main() async {
   Logger.root.level = Level.ALL; // defaults to Level.INFO
   Logger.root.onRecord.listen((record) {
     print('${record.level.name}: ${record.time}: ${record.message}');
@@ -51,5 +51,12 @@ void main() async {
   unsubscribeRecordingState.call();
 
   logger.info('exiting');
-  await finalizeChildProcesses();
+}
+
+Future<void> main() async {
+  try {
+    await _main();
+  } finally {
+    await finalizeChildProcesses();
+  }
 }
