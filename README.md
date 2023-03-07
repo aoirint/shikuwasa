@@ -12,6 +12,10 @@ dart run lib/dart/main.dart
 dart compile exe lib/dart/main.dart
 
 ./lib/dart/main.exe
+
+# WIP
+flutter run -d windows
+flutter build windows
 ```
 
 ## Getting Started
