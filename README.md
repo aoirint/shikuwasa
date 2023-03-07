@@ -2,6 +2,14 @@
 
 A new Flutter project.
 
+## Development
+
+```shell
+flutter pub run build_runner watch --delete-conflicting-outputs
+
+dart run lib/dart/main.dart
+```
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
