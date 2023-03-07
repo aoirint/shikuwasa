@@ -118,6 +118,21 @@ class DirectshowRecordingProgressState {
   });
 }
 
+@freezed
+class DirectshowRecordingProgress with _$DirectshowRecordingProgress {
+  const factory DirectshowRecordingProgress({
+    required String recordingId,
+    required String? bitrate,
+    required int? totalSize,
+    required int? outTimeUs,
+    required String? speed,
+    required String? progress,
+  }) = _DirectshowRecordingProgress;
+
+  factory DirectshowRecordingProgress.fromJson(Map<String, Object?> json) =>
+      _$DirectshowRecordingProgressFromJson(json);
+}
+
 class DirectshowRecordingArgs {
   final SendPort childToParentSendPort;
   final String deviceAlternativeName;
@@ -157,6 +172,8 @@ void _entryPointRecording(DirectshowRecordingArgs arguments) async {
   // childToParentSendPort.send(DirectshowRecordingIpcMessageLog(
   //     text: 'ProgressTempFilePath $progressTempFilePath'));
 
+  // Dart does not kill child processes when the main process killed on Windows.
+  // https://github.com/dart-lang/sdk/issues/49234
   final process = await Process.start(
     ffmpegExecutable,
     [
@@ -275,6 +292,12 @@ abstract class DirectshowRepository {
     required String outputFilePath,
   });
 
+  /// return unsubscribe function
+  Function() listenRecordingProgress({
+    required String recordingId,
+    required Function(DirectshowRecordingProgress) listener,
+  });
+
   /// [recordingId] is the return value of [startRecording].
   Future<void> stopRecording({
     required String recordingId,
@@ -283,6 +306,7 @@ abstract class DirectshowRepository {
 
 class DirectshowRepositoryImpl extends DirectshowRepository {
   var recordingSessionList = <DirectshowRecordingSession>[];
+  var recordingProgressListeners = <Function(DirectshowRecordingProgress)>[];
 
   @override
   Future<List<DirectshowDevice>> getDeviceList() async {
@@ -400,6 +424,17 @@ class DirectshowRepositoryImpl extends DirectshowRepository {
       }
       if (message is DirectshowRecordingIpcMessageProcessProgress) {
         logger.info('PROGRESS $message');
+
+        for (final listener in recordingProgressListeners) {
+          listener.call(DirectshowRecordingProgress(
+            recordingId: recordingId,
+            bitrate: message.bitrate,
+            totalSize: message.totalSize,
+            outTimeUs: message.outTimeUs,
+            speed: message.speed,
+            progress: message.progress,
+          ));
+        }
       }
     });
 
@@ -466,5 +501,17 @@ class DirectshowRepositoryImpl extends DirectshowRepository {
 
     recordingSession.childToParentReceivePort.close();
     recordingSession.isolate.kill();
+  }
+
+  @override
+  Function() listenRecordingProgress({
+    required String recordingId,
+    required Function(DirectshowRecordingProgress) listener,
+  }) {
+    recordingProgressListeners.add(listener);
+
+    return () {
+      recordingProgressListeners.remove(listener);
+    };
   }
 }

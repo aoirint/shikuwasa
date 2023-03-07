@@ -40,3 +40,25 @@ Map<String, dynamic> _$$_DirectshowRecordingIpcMessageProcessProgressToJson(
       'speed': instance.speed,
       'progress': instance.progress,
     };
+
+_$_DirectshowRecordingProgress _$$_DirectshowRecordingProgressFromJson(
+        Map<String, dynamic> json) =>
+    _$_DirectshowRecordingProgress(
+      recordingId: json['recordingId'] as String,
+      bitrate: json['bitrate'] as String?,
+      totalSize: json['totalSize'] as int?,
+      outTimeUs: json['outTimeUs'] as int?,
+      speed: json['speed'] as String?,
+      progress: json['progress'] as String?,
+    );
+
+Map<String, dynamic> _$$_DirectshowRecordingProgressToJson(
+        _$_DirectshowRecordingProgress instance) =>
+    <String, dynamic>{
+      'recordingId': instance.recordingId,
+      'bitrate': instance.bitrate,
+      'totalSize': instance.totalSize,
+      'outTimeUs': instance.outTimeUs,
+      'speed': instance.speed,
+      'progress': instance.progress,
+    };

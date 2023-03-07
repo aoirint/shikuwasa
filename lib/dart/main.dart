@@ -35,11 +35,19 @@ void main() async {
     outputFilePath: outputFilePath,
   );
 
+  final unsubscribeRecordingState =
+      directshowRepository.listenRecordingProgress(
+          recordingId: recordingId,
+          listener: (recordingState) {
+            logger.info('MAIN $recordingState');
+          });
+
   logger.info('start waiting');
   await Future.delayed(const Duration(seconds: 10));
   logger.info('finished waiting');
 
   await directshowRepository.stopRecording(recordingId: recordingId);
+  unsubscribeRecordingState.call();
 
   logger.info('exiting');
 }
