@@ -4,10 +4,10 @@ import 'dart:io';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logging/logging.dart';
 
-part 'directshow.freezed.dart';
-part 'directshow.g.dart';
+part 'directshow_device_list.freezed.dart';
+part 'directshow_device_list.g.dart';
 
-final logger = Logger('directshow');
+final logger = Logger('directshow_device_list');
 
 const ffmpegExecutable = 'ffmpeg';
 

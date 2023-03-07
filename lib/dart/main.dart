@@ -1,6 +1,6 @@
 import 'package:logging/logging.dart';
 
-import 'lib/directshow.dart';
+import 'lib/directshow/directshow_device_list.dart';
 
 final logger = Logger('main');
 

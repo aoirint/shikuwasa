@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'directshow.dart';
+part of 'directshow_device_list.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
