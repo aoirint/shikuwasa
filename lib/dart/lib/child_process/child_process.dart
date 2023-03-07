@@ -19,11 +19,11 @@ void _onProcessSignal(ProcessSignal signal) {
 void _initializeOnce() {
   if (_initialized) return;
 
-  ProcessSignal.sigint.watch().listen(_onProcessSignal);
+  sigintSubscription = ProcessSignal.sigint.watch().listen(_onProcessSignal);
 
   if (!Platform.isWindows) {
-    ProcessSignal.sigterm.watch().listen(_onProcessSignal);
-    ProcessSignal.sigkill.watch().listen(_onProcessSignal);
+    sigtermSubscription = ProcessSignal.sigterm.watch().listen(_onProcessSignal);
+    sigkillSubscription = ProcessSignal.sigkill.watch().listen(_onProcessSignal);
   }
 
   _initialized = true;
