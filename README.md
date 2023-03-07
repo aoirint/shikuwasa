@@ -8,6 +8,10 @@ A new Flutter project.
 flutter pub run build_runner watch --delete-conflicting-outputs
 
 dart run lib/dart/main.dart
+
+dart compile exe lib/dart/main.dart
+
+./lib/dart/main.exe
 ```
 
 ## Getting Started
