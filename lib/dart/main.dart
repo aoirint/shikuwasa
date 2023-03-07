@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:collection/collection.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart' as p;
+import 'package:shikuwasa/dart/lib/child_process/child_process.dart';
 
 import 'lib/directshow/directshow_device_list.dart';
 
@@ -50,4 +51,5 @@ void main() async {
   unsubscribeRecordingState.call();
 
   logger.info('exiting');
+  await finalizeChildProcesses();
 }

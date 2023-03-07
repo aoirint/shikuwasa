@@ -6,6 +6,7 @@ import 'dart:isolate';
 import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logging/logging.dart';
+import 'package:shikuwasa/dart/lib/child_process/child_process.dart';
 import 'package:uuid/uuid.dart';
 import 'package:path/path.dart' as p;
 
@@ -176,7 +177,7 @@ void _entryPointRecording(DirectshowRecordingArgs arguments) async {
 
   // Dart does not kill child processes when the main process killed on Windows (2023-03-08).
   // https://github.com/dart-lang/sdk/issues/49234
-  final process = await Process.start(
+  final process = await startChildProcess(
     ffmpegExecutable,
     [
       '-hide_banner',
@@ -323,7 +324,7 @@ class DirectshowRepositoryImpl extends DirectshowRepository {
       '-i',
       'dummy',
     ];
-    final result = await Process.run(
+    final result = await runChildProcess(
       ffmpegExecutable,
       arguments,
       environment: {
