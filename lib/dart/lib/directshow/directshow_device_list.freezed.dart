@@ -193,3 +193,247 @@ abstract class _DirectshowDevice implements DirectshowDevice {
   _$$_DirectshowDeviceCopyWith<_$_DirectshowDevice> get copyWith =>
       throw _privateConstructorUsedError;
 }
+
+DirectshowRecordingIpcMessageProcessProgress
+    _$DirectshowRecordingIpcMessageProcessProgressFromJson(
+        Map<String, dynamic> json) {
+  return _DirectshowRecordingIpcMessageProcessProgress.fromJson(json);
+}
+
+/// @nodoc
+mixin _$DirectshowRecordingIpcMessageProcessProgress {
+  String get bitrate => throw _privateConstructorUsedError;
+  int get totalSize => throw _privateConstructorUsedError;
+  int get outTimeUs => throw _privateConstructorUsedError;
+  String get speed => throw _privateConstructorUsedError;
+  String get progress => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $DirectshowRecordingIpcMessageProcessProgressCopyWith<
+          DirectshowRecordingIpcMessageProcessProgress>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $DirectshowRecordingIpcMessageProcessProgressCopyWith<$Res> {
+  factory $DirectshowRecordingIpcMessageProcessProgressCopyWith(
+          DirectshowRecordingIpcMessageProcessProgress value,
+          $Res Function(DirectshowRecordingIpcMessageProcessProgress) then) =
+      _$DirectshowRecordingIpcMessageProcessProgressCopyWithImpl<$Res,
+          DirectshowRecordingIpcMessageProcessProgress>;
+  @useResult
+  $Res call(
+      {String bitrate,
+      int totalSize,
+      int outTimeUs,
+      String speed,
+      String progress});
+}
+
+/// @nodoc
+class _$DirectshowRecordingIpcMessageProcessProgressCopyWithImpl<$Res,
+        $Val extends DirectshowRecordingIpcMessageProcessProgress>
+    implements $DirectshowRecordingIpcMessageProcessProgressCopyWith<$Res> {
+  _$DirectshowRecordingIpcMessageProcessProgressCopyWithImpl(
+      this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? bitrate = null,
+    Object? totalSize = null,
+    Object? outTimeUs = null,
+    Object? speed = null,
+    Object? progress = null,
+  }) {
+    return _then(_value.copyWith(
+      bitrate: null == bitrate
+          ? _value.bitrate
+          : bitrate // ignore: cast_nullable_to_non_nullable
+              as String,
+      totalSize: null == totalSize
+          ? _value.totalSize
+          : totalSize // ignore: cast_nullable_to_non_nullable
+              as int,
+      outTimeUs: null == outTimeUs
+          ? _value.outTimeUs
+          : outTimeUs // ignore: cast_nullable_to_non_nullable
+              as int,
+      speed: null == speed
+          ? _value.speed
+          : speed // ignore: cast_nullable_to_non_nullable
+              as String,
+      progress: null == progress
+          ? _value.progress
+          : progress // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$_DirectshowRecordingIpcMessageProcessProgressCopyWith<$Res>
+    implements $DirectshowRecordingIpcMessageProcessProgressCopyWith<$Res> {
+  factory _$$_DirectshowRecordingIpcMessageProcessProgressCopyWith(
+          _$_DirectshowRecordingIpcMessageProcessProgress value,
+          $Res Function(_$_DirectshowRecordingIpcMessageProcessProgress) then) =
+      __$$_DirectshowRecordingIpcMessageProcessProgressCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {String bitrate,
+      int totalSize,
+      int outTimeUs,
+      String speed,
+      String progress});
+}
+
+/// @nodoc
+class __$$_DirectshowRecordingIpcMessageProcessProgressCopyWithImpl<$Res>
+    extends _$DirectshowRecordingIpcMessageProcessProgressCopyWithImpl<$Res,
+        _$_DirectshowRecordingIpcMessageProcessProgress>
+    implements _$$_DirectshowRecordingIpcMessageProcessProgressCopyWith<$Res> {
+  __$$_DirectshowRecordingIpcMessageProcessProgressCopyWithImpl(
+      _$_DirectshowRecordingIpcMessageProcessProgress _value,
+      $Res Function(_$_DirectshowRecordingIpcMessageProcessProgress) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? bitrate = null,
+    Object? totalSize = null,
+    Object? outTimeUs = null,
+    Object? speed = null,
+    Object? progress = null,
+  }) {
+    return _then(_$_DirectshowRecordingIpcMessageProcessProgress(
+      bitrate: null == bitrate
+          ? _value.bitrate
+          : bitrate // ignore: cast_nullable_to_non_nullable
+              as String,
+      totalSize: null == totalSize
+          ? _value.totalSize
+          : totalSize // ignore: cast_nullable_to_non_nullable
+              as int,
+      outTimeUs: null == outTimeUs
+          ? _value.outTimeUs
+          : outTimeUs // ignore: cast_nullable_to_non_nullable
+              as int,
+      speed: null == speed
+          ? _value.speed
+          : speed // ignore: cast_nullable_to_non_nullable
+              as String,
+      progress: null == progress
+          ? _value.progress
+          : progress // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_DirectshowRecordingIpcMessageProcessProgress
+    implements _DirectshowRecordingIpcMessageProcessProgress {
+  const _$_DirectshowRecordingIpcMessageProcessProgress(
+      {required this.bitrate,
+      required this.totalSize,
+      required this.outTimeUs,
+      required this.speed,
+      required this.progress});
+
+  factory _$_DirectshowRecordingIpcMessageProcessProgress.fromJson(
+          Map<String, dynamic> json) =>
+      _$$_DirectshowRecordingIpcMessageProcessProgressFromJson(json);
+
+  @override
+  final String bitrate;
+  @override
+  final int totalSize;
+  @override
+  final int outTimeUs;
+  @override
+  final String speed;
+  @override
+  final String progress;
+
+  @override
+  String toString() {
+    return 'DirectshowRecordingIpcMessageProcessProgress(bitrate: $bitrate, totalSize: $totalSize, outTimeUs: $outTimeUs, speed: $speed, progress: $progress)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_DirectshowRecordingIpcMessageProcessProgress &&
+            (identical(other.bitrate, bitrate) || other.bitrate == bitrate) &&
+            (identical(other.totalSize, totalSize) ||
+                other.totalSize == totalSize) &&
+            (identical(other.outTimeUs, outTimeUs) ||
+                other.outTimeUs == outTimeUs) &&
+            (identical(other.speed, speed) || other.speed == speed) &&
+            (identical(other.progress, progress) ||
+                other.progress == progress));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, bitrate, totalSize, outTimeUs, speed, progress);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_DirectshowRecordingIpcMessageProcessProgressCopyWith<
+          _$_DirectshowRecordingIpcMessageProcessProgress>
+      get copyWith =>
+          __$$_DirectshowRecordingIpcMessageProcessProgressCopyWithImpl<
+                  _$_DirectshowRecordingIpcMessageProcessProgress>(
+              this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_DirectshowRecordingIpcMessageProcessProgressToJson(
+      this,
+    );
+  }
+}
+
+abstract class _DirectshowRecordingIpcMessageProcessProgress
+    implements DirectshowRecordingIpcMessageProcessProgress {
+  const factory _DirectshowRecordingIpcMessageProcessProgress(
+          {required final String bitrate,
+          required final int totalSize,
+          required final int outTimeUs,
+          required final String speed,
+          required final String progress}) =
+      _$_DirectshowRecordingIpcMessageProcessProgress;
+
+  factory _DirectshowRecordingIpcMessageProcessProgress.fromJson(
+          Map<String, dynamic> json) =
+      _$_DirectshowRecordingIpcMessageProcessProgress.fromJson;
+
+  @override
+  String get bitrate;
+  @override
+  int get totalSize;
+  @override
+  int get outTimeUs;
+  @override
+  String get speed;
+  @override
+  String get progress;
+  @override
+  @JsonKey(ignore: true)
+  _$$_DirectshowRecordingIpcMessageProcessProgressCopyWith<
+          _$_DirectshowRecordingIpcMessageProcessProgress>
+      get copyWith => throw _privateConstructorUsedError;
+}

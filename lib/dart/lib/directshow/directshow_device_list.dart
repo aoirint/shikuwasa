@@ -86,20 +86,20 @@ class DirectshowRecordingIpcMessageProcessLog {
   });
 }
 
-class DirectshowRecordingIpcMessageProcessProgress {
-  final String bitrate;
-  final int totalSize;
-  final int outTimeUs;
-  final String speed;
-  final String progress;
+@freezed
+class DirectshowRecordingIpcMessageProcessProgress
+    with _$DirectshowRecordingIpcMessageProcessProgress {
+  const factory DirectshowRecordingIpcMessageProcessProgress({
+    required String bitrate,
+    required int totalSize,
+    required int outTimeUs,
+    required String speed,
+    required String progress,
+  }) = _DirectshowRecordingIpcMessageProcessProgress;
 
-  const DirectshowRecordingIpcMessageProcessProgress({
-    required this.bitrate,
-    required this.totalSize,
-    required this.outTimeUs,
-    required this.speed,
-    required this.progress,
-  });
+  factory DirectshowRecordingIpcMessageProcessProgress.fromJson(
+          Map<String, Object?> json) =>
+      _$DirectshowRecordingIpcMessageProcessProgressFromJson(json);
 }
 
 class DirectshowRecordingProgressState {
@@ -150,12 +150,12 @@ void _entryPointRecording(DirectshowRecordingArgs arguments) async {
   //     ResourceHandle.fromWritePipe(ffreportPipe.write);
   // final ffreportPipeFile = ffreportPipeResourceHandle.toFile();
 
-  final progressTempDir = await Directory.systemTemp.createTemp();
-  final progressTempFilePath = p.join(progressTempDir.path, 'progress.log');
-  final progressTempFile = await File(progressTempFilePath).create();
+  // final progressTempDir = await Directory.systemTemp.createTemp();
+  // final progressTempFilePath = p.join(progressTempDir.path, 'progress.log');
+  // final progressTempFile = await File(progressTempFilePath).create();
 
-  childToParentSendPort.send(DirectshowRecordingIpcMessageLog(
-      text: 'ProgressTempFilePath $progressTempFilePath'));
+  // childToParentSendPort.send(DirectshowRecordingIpcMessageLog(
+  //     text: 'ProgressTempFilePath $progressTempFilePath'));
 
   final process = await Process.start(
     ffmpegExecutable,
@@ -164,7 +164,7 @@ void _entryPointRecording(DirectshowRecordingArgs arguments) async {
       '-loglevel',
       '+repeat',
       '-progress',
-      progressTempFilePath, // use tempfile instead of NamedPipe
+      'pipe:1', // use stdout instead of NamedPipe
       '-y',
       '-f',
       'dshow',
@@ -189,59 +189,54 @@ void _entryPointRecording(DirectshowRecordingArgs arguments) async {
 
   var progressState = DirectshowRecordingProgressState();
 
-  final progressTempFileSystemEventSubscription =
-      progressTempFile.watch(events: FileSystemEvent.all).listen((event) {
-    progressTempFile
-        .openRead()
-        .transform(utf8.decoder)
-        .transform(const LineSplitter())
-        .forEach((lineText) {
-      childToParentSendPort.send(
-          DirectshowRecordingIpcMessageLog(text: 'ProgressLine $lineText'));
+  process.stdout
+      .transform(utf8.decoder)
+      .transform(const LineSplitter())
+      .listen((lineText) {
+    // childToParentSendPort
+    //     .send(DirectshowRecordingIpcMessageLog(text: 'ProgressLine $lineText'));
 
-      final splitIndex = lineText.indexOf('=');
-      if (splitIndex == -1) return;
+    final splitIndex = lineText.indexOf('=');
+    if (splitIndex == -1) return;
 
-      final key = lineText.substring(0, splitIndex);
-      final value = lineText.substring(splitIndex + 1);
+    final key = lineText.substring(0, splitIndex);
+    final value = lineText.substring(splitIndex + 1);
 
-      if (key == 'bitrate') {
-        progressState.bitrate = value;
-      } else if (key == 'total_size') {
-        progressState.totalSize = int.parse(value);
-      } else if (key == 'out_time_us') {
-        // avoid out_time_ms bug: https://trac.ffmpeg.org/ticket/7345
-        progressState.outTimeUs = int.parse(value);
-      } else if (key == 'speed') {
-        progressState.speed = value;
-      } else if (key == 'progress') {
-        progressState.progress = value;
+    if (key == 'bitrate') {
+      progressState.bitrate = value;
+    } else if (key == 'total_size') {
+      progressState.totalSize = int.parse(value);
+    } else if (key == 'out_time_us') {
+      // avoid out_time_ms bug: https://trac.ffmpeg.org/ticket/7345
+      progressState.outTimeUs = int.parse(value);
+    } else if (key == 'speed') {
+      progressState.speed = value;
+    } else if (key == 'progress') {
+      progressState.progress = value;
 
-        final bitrate = progressState.bitrate;
-        final totalSize = progressState.totalSize;
-        final outTimeUs = progressState.outTimeUs;
-        final speed = progressState.speed;
-        final progress = progressState.progress;
+      final bitrate = progressState.bitrate;
+      final totalSize = progressState.totalSize;
+      final outTimeUs = progressState.outTimeUs;
+      final speed = progressState.speed;
+      final progress = progressState.progress;
 
-        if (bitrate != null &&
-            totalSize != null &&
-            outTimeUs != null &&
-            speed != null &&
-            progress != null) {
-          childToParentSendPort
-              .send(DirectshowRecordingIpcMessageProcessProgress(
-            bitrate: bitrate,
-            totalSize: totalSize,
-            outTimeUs: outTimeUs,
-            speed: speed,
-            progress: progress,
-          ));
-        }
-
-        // reset state after 'progress=...' line
-        progressState = DirectshowRecordingProgressState();
+      if (bitrate != null &&
+          totalSize != null &&
+          outTimeUs != null &&
+          speed != null &&
+          progress != null) {
+        childToParentSendPort.send(DirectshowRecordingIpcMessageProcessProgress(
+          bitrate: bitrate,
+          totalSize: totalSize,
+          outTimeUs: outTimeUs,
+          speed: speed,
+          progress: progress,
+        ));
       }
-    });
+
+      // reset state after 'progress=...' line
+      progressState = DirectshowRecordingProgressState();
+    }
   });
 
   parentToChildReceivePort.listen((message) async {
@@ -262,7 +257,6 @@ void _entryPointRecording(DirectshowRecordingArgs arguments) async {
   final exitCode = await process.exitCode;
 
   parentToChildReceivePort.close();
-  await progressTempFileSystemEventSubscription.cancel();
 
   childToParentSendPort
       .send(DirectshowRecordingIpcMessageLog(text: 'Exit code $exitCode'));
