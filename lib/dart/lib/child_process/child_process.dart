@@ -5,6 +5,7 @@ import 'dart:io';
 var _initialized = false;
 final childProcesses = <Process>[];
 
+StreamSubscription<ProcessSignal>? sighupSubscription;
 StreamSubscription<ProcessSignal>? sigintSubscription;
 StreamSubscription<ProcessSignal>? sigtermSubscription;
 StreamSubscription<ProcessSignal>? sigkillSubscription;
@@ -19,6 +20,7 @@ void _onProcessSignal(ProcessSignal signal) {
 void _initializeOnce() {
   if (_initialized) return;
 
+  sighupSubscription = ProcessSignal.sighup.watch().listen(_onProcessSignal);
   sigintSubscription = ProcessSignal.sigint.watch().listen(_onProcessSignal);
 
   if (!Platform.isWindows) {
@@ -32,6 +34,7 @@ void _initializeOnce() {
 }
 
 Future<void> finalizeChildProcesses() async {
+  await sighupSubscription?.cancel();
   await sigintSubscription?.cancel();
   await sigtermSubscription?.cancel();
   await sigkillSubscription?.cancel();
