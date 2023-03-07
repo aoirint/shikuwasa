@@ -10,10 +10,13 @@ StreamSubscription<ProcessSignal>? sigintSubscription;
 StreamSubscription<ProcessSignal>? sigtermSubscription;
 StreamSubscription<ProcessSignal>? sigkillSubscription;
 
-void _onProcessSignal(ProcessSignal signal) {
+Future<void> _onProcessSignal(ProcessSignal signal) async {
   for (final childProcess in childProcesses) {
     childProcess.kill(signal);
+    await childProcess.exitCode;
   }
+
+  await finalizeChildProcesses();
 }
 
 /// Workaround for [dart-lang/sdk#49234](https://github.com/dart-lang/sdk/issues/49234)
