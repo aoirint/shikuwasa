@@ -1,4 +1,8 @@
+import 'dart:io';
+
+import 'package:collection/collection.dart';
 import 'package:logging/logging.dart';
+import 'package:path/path.dart' as p;
 
 import 'lib/directshow/directshow_device_list.dart';
 
@@ -11,6 +15,31 @@ void main() async {
   });
 
   final directshowRepository = DirectshowRepositoryImpl();
+  final deviceList = await directshowRepository.getDeviceList();
+  logger.info(deviceList);
 
-  logger.info(await directshowRepository.getDirectshowDeviceList());
+  final firstAudioDevice =
+      deviceList.firstWhereOrNull((device) => device.deviceType == 'audio');
+  if (firstAudioDevice == null) {
+    throw Exception('No audio device found');
+  }
+  logger.info(firstAudioDevice.deviceAlternativeName);
+
+  final workingDirectory = Directory.current.absolute.path;
+  final outputFilePath = p.join(workingDirectory, 'a.wav');
+  logger.info(workingDirectory);
+  logger.info(outputFilePath);
+
+  final recordingId = await directshowRepository.startRecording(
+    deviceAlternativeName: firstAudioDevice.deviceAlternativeName,
+    outputFilePath: outputFilePath,
+  );
+
+  logger.info('start waiting');
+  await Future.delayed(const Duration(seconds: 10));
+  logger.info('finished waiting');
+
+  await directshowRepository.stopRecording(recordingId: recordingId);
+
+  logger.info('exiting');
 }
