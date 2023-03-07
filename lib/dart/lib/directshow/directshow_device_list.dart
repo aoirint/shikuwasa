@@ -165,6 +165,8 @@ void _entryPointRecording(DirectshowRecordingArgs arguments) async {
   //     ResourceHandle.fromWritePipe(ffreportPipe.write);
   // final ffreportPipeFile = ffreportPipeResourceHandle.toFile();
 
+  // Temporary file implementation is not completed yet.
+  // Calculating the decoded valid UTF-8 byte length is complicated.
   // final progressTempDir = await Directory.systemTemp.createTemp();
   // final progressTempFilePath = p.join(progressTempDir.path, 'progress.log');
   // final progressTempFile = await File(progressTempFilePath).create();
@@ -172,7 +174,7 @@ void _entryPointRecording(DirectshowRecordingArgs arguments) async {
   // childToParentSendPort.send(DirectshowRecordingIpcMessageLog(
   //     text: 'ProgressTempFilePath $progressTempFilePath'));
 
-  // Dart does not kill child processes when the main process killed on Windows.
+  // Dart does not kill child processes when the main process killed on Windows (2023-03-08).
   // https://github.com/dart-lang/sdk/issues/49234
   final process = await Process.start(
     ffmpegExecutable,
