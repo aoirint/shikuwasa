@@ -10,5 +10,7 @@ void main() async {
     print('${record.level.name}: ${record.time}: ${record.message}');
   });
 
-  logger.info(await getDirectshowDeviceList());
+  final directshowRepository = DirectshowRepositoryImpl();
+
+  logger.info(await directshowRepository.getDirectshowDeviceList());
 }
